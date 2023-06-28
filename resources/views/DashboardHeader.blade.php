@@ -9,7 +9,7 @@
   <body>
   <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">All</a>
+    <a class="nav-link active" aria-current="page" href="all">All</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="dance">Dance</a>

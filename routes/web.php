@@ -13,14 +13,18 @@ use App\Http\Controllers\AlreadyLoggedin;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::view('/','Home');
+
+
 
 Route::controller(OurController::class)->group(function () {
 
     Route::middleware('AlreadyLoggedin')->group(function () {
     Route::get('/login', 'loginget');
     Route::get('/registration','registrationget');
+    Route::get('/userdata', 'userdataget');
     });
+    Route::get('/','home');
+    
     Route::get('/addpost', 'addpostget')->middleware('loggedin');;
 
     Route::post('/registration','registrationpost')->name('registrationpost');
@@ -30,6 +34,15 @@ Route::controller(OurController::class)->group(function () {
     Route::get('/dashboard', 'dashboard');
     Route::get('/logout','logout');
     Route::post('/addpost', 'addpost')->name('addpostpost');
-
+    Route::get('/all', 'all');
+    Route::get('/dance', 'dance');
+    Route::get('/singing', 'singing');
+    Route::get('/speaking', 'publicspeaking');
+    Route::get('/userall', 'userall');
+    Route::get('/userdance', 'userdance');
+    Route::get('/usersinging', 'usersinging');
+    Route::get('/userspeaking', 'userpublicspeaking');
+    Route::get('/yourpost', 'yourpost');
+    Route::get('/yourdraft','yourdraft');
 });
 

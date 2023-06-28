@@ -12,7 +12,7 @@
   <div class="container-fluid">
     <a class="navbar-brand">Welcome {{$data->name}}</a>
     <form class="d-flex" role="search">
-    <a style="margin:2px"class="btn btn-outline-secondary" form-control me-2" type="submit" href="">Yours Data</a>   
+    <a style="margin:2px"class="btn btn-outline-secondary" form-control me-2" type="submit" href="userdata">Yours Data</a>   
     <a style="margin:2px"class="btn btn-outline-secondary" form-control me-2" type="submit" href="addpost">Addpost</a>
       <a style="margin:2px"class="btn btn-outline-secondary" form-control me-2" type="submit" href="logout">Logout</a>
     </form>
@@ -21,10 +21,31 @@
 
 </div>
 <div>
-@include('DashboardHeader')
+@include('userloginheader')
 </div>
 <div>
-    
+<div>
+@foreach($users as $user)
+   <div>
+   <div class="container-fluid mb-3 heightset">
+            <div class="row border border-black">
+                
+                <div class="col-md-7 d-flex flex-column justify-content-center align-items-center p-4">
+                    
+                    <h1  font-family: 'Righteous', cursive;>  </h1>
+                    <button type="button" class="btn btn-info">Tittle-{{$user->tittle}}</button>
+                    <h4 class=" fs-4" style="font-family: 'Kalam', cursive;">Description-{{$user->description}}</h4>
+                </div>
+                <div class="col-md-4">
+                <iframe  height="200" width="400"src="/assets/{{$user->file}}"></iframe>
+                   
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    @endforeach
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>
