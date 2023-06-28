@@ -2,7 +2,7 @@
 @section('content')
 <div class="container ">
 
-<form action="{{route('addpostpost')}}" method="POST"  class='ms-auto  me-auto' style='width:500px'>
+<form action="{{route('addpostpost')}}" method="POST" enctype="multipart/form-data" class='ms-auto  me-auto' style='width:500px'>
     @csrf
     <h4>
         Addpost
