@@ -9,19 +9,29 @@ use lluminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\welcomeEmail;
+
 use Illuminate\Support\Facades\Mail;
 use Hash;
 
 class OurController extends Controller
-{
+{ 
+  public function home(Request $request)
+  {
+    
+    $users=DB::table('posts')->where('posttype','=','post')->get();
+      return view('Home',['users' => $users]);
+  }
+
     public function loginget()
     {
       return view('Login');
     }
+
     public function registrationget()
     {
       return view('Registration');
     }
+
     public function addpostget()
     {
       return view('Addpost');
@@ -32,14 +42,17 @@ class OurController extends Controller
 //     $value = session('loginId');
 // echo $value;
     
-    $data=array();
-    if(session()->has('loginId'))
-    {
-        $data=user::where('id','=',session()->get('loginId'))->first();
-    }
-    // echo $data;
-    return view('dashboard',compact('data'));
+if(session()->has('loginId'))
+{
+    $data=user::where('id','=',session()->get('loginId'))->first();
+}
 
+    
+    // echo $data;
+    $users=DB::table('posts')->where('posttype','=','post')->get();
+      return view('Dashboard',['users' => $users,'data'=>$data]);
+  
+    
 }
 public function logout()
 {
@@ -107,12 +120,14 @@ public function logout()
             'coursetype'=>'required|in:dance,singing,publicSpeaking',
             'postingtype'=>'required|in:draft|post',
       ]);
-
+         $file = $request->file;
+        $filename = time().'.'.$file->getClientOriginalExtension();
+        $request->file->move('assets',$filename);
       
       DB::table('posts')->insert([
         'tittle'=>$request->tittle,
         'description' =>$request->description ,
-        'file' => $request->file,
+        'file' => $filename,
         'coursetype' =>$request->coursetype,
         'posttype'=>$request->postingtype,
         'user_id'=> $request->session()->get('loginId'),
@@ -124,14 +139,112 @@ public function logout()
 
     public function email(Request $request)
     {
+     
         $emailData=[
             'subject'=>'Welcome to my blog site',
             'body'=>'you can here upload and see others posts',
         ];
-        Mail::to('muskangirdhar345@gmail.com')->send(new welcomeEmail($emailData));
+        $to = [
+          [
+              'email' => 'muskangirdhar345@gmail.com', 
+              'name' => 'Muskan',
+          ]
+      ];
+      //Mail::to($to)
+        Mail::to($to)->send(new welcomeEmail($emailData));
 
     }
 
+    public function userdataget(Request $request)
+    {
+      $myid=session()->get('loginId');
+      $users=DB::table('posts')->where('posttype','=','post')->where('user_id','=',$myid)->orderBy('updated_at','DESC')->get();
+      return view('userdata',['users' => $users]);
+  
+    }
+    public function all(Request $request)
+    {
 
+      $users=DB::table('posts')->where('posttype','=','post')->orderBy('updated_at','DESC')->get();
+      return view('Home',['users' => $users]);
+  
+    }
 
+  public function dance(Request $request)
+    {
+       
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','dance')->orderBy('updated_at','DESC')->get();
+      return view('Home',['users' => $users]);
+  
+    }
+    public function singing(Request $request)
+    {
+       
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','singing')->orderBy('updated_at','DESC')->get();
+      return view('Home',['users' => $users]);
+  
+    }
+    public function publicspeaking(Request $request)
+    {
+       
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','publicSpeaking')->orderBy('updated_at','DESC')->get();
+      return view('Home',['users' => $users]);
+  
+    }
+    public function userall(Request $request)
+    {
+      if(session()->has('loginId'))
+{
+    $data=user::where('id','=',session()->get('loginId'))->first();
+}
+      $users=DB::table('posts')->where('posttype','=','post')->orderBy('updated_at','DESC')->get();
+      return view('Dashboard',['users' => $users,'data'=>$data]);
+  
+    }
+
+  public function userdance(Request $request)
+    {
+      if(session()->has('loginId'))
+      {
+          $data=user::where('id','=',session()->get('loginId'))->first();
+      }
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','dance')->orderBy('updated_at', 'ASC')->get();
+      return view('Dashboard',['users' => $users,'data'=>$data]);
+  
+    }
+    public function usersinging(Request $request)
+    {
+      if(session()->has('loginId'))
+      {
+          $data=user::where('id','=',session()->get('loginId'))->first();
+      }
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','singing')->orderBy('updated_at', 'DESC')->get();
+      return view('Dashboard',['users' => $users,'data'=>$data]);
+  
+    }
+    public function userpublicspeaking(Request $request)
+    {
+      if(session()->has('loginId'))
+      {
+          $data=user::where('id','=',session()->get('loginId'))->first();
+      }
+      $users=DB::table('posts')->where('posttype','=','post')->where('coursetype','=','publicSpeaking')->orderBy('updated_at', 'DESC')->get();
+      return view('Dashboard',['users' => $users,'data'=>$data]);
+  
+    }
+
+    public function yourpost(Request $request)
+    {
+      $myid=session()->get('loginId');
+      $users=DB::table('posts')->where('posttype','=','post')->where('user_id','=',$myid)->orderBy('updated_at', 'DESC')->get();
+      return view('userdata',['users' => $users]);
+  
+    }
+    public function yourdraft(Request $request)
+    {
+      $myid=session()->get('loginId');
+      $users=DB::table('posts')->where('posttype','=','draft')->where('user_id','=',$myid)->orderBy('updated_at', 'DESC')->get();
+      return view('userdata',['users' => $users]);
+  
+    }
 }
