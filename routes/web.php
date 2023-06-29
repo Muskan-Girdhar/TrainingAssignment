@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OurController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AlreadyLoggedin;
 /*
 |--------------------------------------------------------------------------
@@ -16,19 +16,19 @@ use App\Http\Controllers\AlreadyLoggedin;
 
 
 
-Route::controller(OurController::class)->group(function () {
+Route::controller(BlogController::class)->group(function () {
 
     Route::middleware('AlreadyLoggedin')->group(function () {
-    Route::get('/login', 'loginget');
-    Route::get('/registration','registrationget');
-    Route::get('/userdata', 'userdataget');
+    Route::get('/login', 'loginGet');
+    Route::get('/registration','registrationGet');
+    Route::get('/userdata', 'userDataGet');
     });
     Route::get('/','home');
     
-    Route::get('/addpost', 'addpostget')->middleware('loggedin');;
+    Route::get('/addpost', 'addPostGet')->middleware('loggedin');;
 
-    Route::post('/registration','registrationpost')->name('registrationpost');
-    Route::post('/login','loginpost')->name('loginpost');
+    Route::post('/registration','registrationPost')->name('registrationpost');
+    Route::post('/login','loginPost')->name('loginpost');
     
     Route::get('/email', 'email');
     Route::get('/dashboard', 'dashboard');
@@ -37,12 +37,12 @@ Route::controller(OurController::class)->group(function () {
     Route::get('/all', 'all');
     Route::get('/dance', 'dance');
     Route::get('/singing', 'singing');
-    Route::get('/speaking', 'publicspeaking');
-    Route::get('/userall', 'userall');
-    Route::get('/userdance', 'userdance');
-    Route::get('/usersinging', 'usersinging');
-    Route::get('/userspeaking', 'userpublicspeaking');
-    Route::get('/yourpost', 'yourpost');
-    Route::get('/yourdraft','yourdraft');
+    Route::get('/speaking', 'publicSpeaking');
+    Route::get('/userall', 'userAll');
+    Route::get('/userdance', 'userDance');
+    Route::get('/usersinging', 'userSinging');
+    Route::get('/userspeaking', 'userPublicSpeaking');
+    Route::get('/yourpost', 'yourPost');
+    Route::get('/yourdraft','yourDraft');
 });
 
